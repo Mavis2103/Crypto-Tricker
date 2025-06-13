@@ -1,6 +1,6 @@
 {
-  "name": "crypto-ticker",
-  "displayName": "crypto-ticker",
+  "name": "crypto-price-ticker",
+  "displayName": "crypto-price-ticker",
   "description": "Keep an eye on cryptocurrency prices as you code!",
   "keywords": [
     "bitcoin",
@@ -33,21 +33,21 @@
   "contributes": {
     "configuration": {
       "properties": {
-        "crypto-ticker.apiKey": {
+        "crypto-price-ticker.apiKey": {
           "type": "string",
           "description": "Your CryptoCompare API key."
         },
-        "crypto-ticker.interval": {
+        "crypto-price-ticker.interval": {
           "type": "number",
           "default": 60,
           "description": "The refresh interval in seconds."
         },
-        "crypto-ticker.onlyRefreshWhenFocused": {
+        "crypto-price-ticker.onlyRefreshWhenFocused": {
           "type": "boolean",
           "default": false,
           "description": "Disable refreshing when the vscode window does not have focus."
         },
-        "crypto-ticker.period": {
+        "crypto-price-ticker.period": {
           "type": "string",
           "default": "24HOUR",
           "enum": [
@@ -57,7 +57,7 @@
           ],
           "description": "The opening period."
         },
-        "crypto-ticker.higherColor": {
+        "crypto-price-ticker.higherColor": {
           "type": "string",
           "default": "lightgreen",
           "description": "The color that indicates the symbols is trading higher."
@@ -67,7 +67,7 @@
           "default": "coral",
           "description": "The color that indicates the symbols is trading lower."
         },
-        "crypto-ticker.tickers": {
+        "crypto-price-ticker.tickers": {
           "type": "object",
           "default": {
             "symbols": [
@@ -83,7 +83,8 @@
   },
   "scripts": {
     "build": "vsce package",
-    "vscode:prepublish": "npm run compile",
+    "publish": "vsce publish",
+    "vscode:prepublish": "bun run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./"
   },
