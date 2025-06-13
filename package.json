@@ -1,11 +1,12 @@
 {
   "name": "crypto-price-ticker",
-  "displayName": "crypto-price-ticker",
+  "displayName": "Crypto Price Ticker",
   "description": "Keep an eye on cryptocurrency prices as you code!",
   "keywords": [
     "bitcoin",
     "ethereum",
-    "litecoin"
+    "price",
+    "crypto"
   ],
   "version": "1.0.0",
   "publisher": "Mavis2103",

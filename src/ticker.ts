@@ -29,10 +29,10 @@ export class Tickers {
     this.symbols = definition.symbols || ['BTC', 'ETH'];
     this.currency = definition.currency || 'USD';
     this.exchange = definition.exchange;
-    this.template = definition.template || '{symbol} {prices}';
+    this.template = definition.template || '{symbol} {price}';
 
     // set the configuration properties
-    const configuration: any = vscode.workspace.getConfiguration().get('crypto-ticker');
+    const configuration: any = vscode.workspace.getConfiguration().get('crypto-price-ticker');
     this.apiKey = configuration.apiKey;
     this.period = configuration.period;
     this.higherColor = configuration.higherColor || 'lightgreen';

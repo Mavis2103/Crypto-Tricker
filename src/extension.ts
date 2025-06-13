@@ -32,7 +32,7 @@ function constructor() {
   }
 
   // get the ticker definition from the configuration
-  const configuration: any = vscode.workspace.getConfiguration().get('crypto-ticker');
+  const configuration: any = vscode.workspace.getConfiguration().get('crypto-price-ticker');
   const definition: any = configuration.tickers;
 
   // create a new ticker
