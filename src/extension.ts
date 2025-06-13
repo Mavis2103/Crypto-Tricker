@@ -1,4 +1,4 @@
-// Copyright (c) Robert Calvert. Licensed under the MIT license.
+// Copyright (c) Mavis2103. Licensed under the MIT license.
 // See LICENSE file in the project root for full license information.
 
 import * as vscode from 'vscode';
@@ -33,10 +33,18 @@ function constructor() {
 
   // get the ticker definition from the configuration
   const configuration: any = vscode.workspace.getConfiguration().get('crypto-price-ticker');
-  const definition: any = configuration.tickers;
+  const tickerDefinitions: any[] = configuration.tickers;
+
+  const tickersConfig = tickerDefinitions.map(definition => ({
+    symbol: definition.symbol || 'BTC',
+    currency: definition.currency || 'USDT',
+    exchange: definition.exchange,
+    template: definition.template || '{symbol} {price}',
+    provider: ['Binance', 'OKX'].includes(definition.provider) ? definition.provider : 'Binance'
+  }));
 
   // create a new ticker
-  tickers = new Tickers(definition);
+  tickers = new Tickers(tickersConfig);
 
   // create the interval and call refresh every x seconds
   interval = setInterval(() => refresh(configuration), configuration.interval * 1000);

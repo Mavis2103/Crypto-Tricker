@@ -1,96 +1,118 @@
-# crypto-price-ticker
+# Crypto Price Ticker
 
-[marketplace]: https://marketplace.visualstudio.com/items?itemName=calvert.crypto-price-ticker
+[marketplace]: https://marketplace.visualstudio.com/items?itemName=Mavis2103.crypto-price-ticker
 
-[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/calvert.crypto-price-ticker)][marketplace]
-[![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/calvert.crypto-price-ticker)][marketplace]
-[![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/calvert.crypto-price-ticker)][marketplace]
-[![Donate Bitcoin](https://img.shields.io/badge/donate-bitcoin-orange)](https://www.blockchain.com/btc/address/36gjpzeQtePfhU41VkM39XLUywpXVmtoKW)
-[![Donate Ethereum](https://img.shields.io/badge/donate-ethereum-lightgrey)](https://etherscan.io/address/0x3f2e6Ae4B4aFa94a51244Ad8997C0962D84Cb627)
-[![Donate Dogecoin](https://img.shields.io/badge/donate-dogecoin-yellowgreen)](https://dogechain.info/address/DBF7o5sTw2CVJ6usnVtwSdGhc5Eyy7Gdj1)
+[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/Mavis2103.crypto-price-ticker)][marketplace]
+[![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/Mavis2103.crypto-price-ticker)][marketplace]
+[![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/Mavis2103.crypto-price-ticker)][marketplace]
 
-Welcome to crypto-price-ticker, a Visual Studio Code extension that allows you to keep an eye on cryptocurrency prices as you code!
+Monitor cryptocurrency prices live on your Visual Studio Code status bar!
 
-### Default Settings
+## Features
 
-The default settings provide a set of basic tickers for BTC, ETH and LTC. The current prices are displayed in USD with colors based on the 24HOUR period.
+- Display real-time prices for cryptocurrencies (BTC, ETH, etc.).
+- Support for multiple data providers: Binance, OKX.
+- Customize coins, comparison currency, provider, colors, and display template.
+- Support for multiple coins at once.
+- Auto-refresh at a configurable interval or only when VSCode is focused.
 
-![Example](https://github.com/robertcalvert/vscode-crypto-price-ticker/raw/master/images/default.png)
+## Installation
 
-### Customization
+Install from [Visual Studio Marketplace][marketplace] or search for `crypto-price-ticker` in the Extensions panel.
 
-This extension uses [cryptocompare.com](https://min-api.cryptocompare.com/documentation) to retrieve the current cryptocurrency prices. Please consult their documentation for a list of supported _symbols_, _currencies_ and _exchanges_.
+## Configuration
 
-You can fully customize your tickers using the crypto-price-ticker extension settings.
+Open your `settings.json` and add or edit the following options:
 
-```javascript
-// Specify your CryptoCompare API key
-"crypto-price-ticker.apiKey": "YOUR_API_KEY",
-
-// Specify the refresh interval in seconds
+```jsonc
+// Refresh interval in seconds
 "crypto-price-ticker.interval": 60,
 
-// Specify the opening period
-"crypto-price-ticker.period": "24HOUR",
+// Only refresh when VSCode window is focused (true/false)
+"crypto-price-ticker.onlyRefreshWhenFocused": false,
 
-// Customize your high and low colors to suite your status bar
+// Color when price increases
 "crypto-price-ticker.higherColor": "lightgreen",
+
+// Color when price decreases
 "crypto-price-ticker.lowerColor": "coral",
 
-// Customize your tickers
+// Array of ticker definitions
 "crypto-price-ticker.tickers": [
-    {
-        // The base cryptocurrency symbol
-        "symbol": "BTC",
-
-        // The comparison currency symbol
-        "currency": "EUR",
-
-        // The cryptocurrency exchange
-        "exchange": "LocalBitcoins",
-
-        // Create a custom ticker template
-        "template": "{symbol} {price} {percent}"
-    },
-    {
-        // You can even compare cryptocurrencies
-        "symbol": "ETH",
-        "currency": "BTC"
-    },
-    {
-        // Wow such coin, much riches
-        "symbol": "DOGE"
-    }
+  {
+    "symbol": "BTC",
+    "currency": "USDT",
+    "provider": "Binance",
+    "template": "{symbol} {price} {percent}"
+  },
+  {
+    "symbol": "ETH",
+    "currency": "USDT",
+    "provider": "OKX",
+    "template": "{symbol} {price} {percent}"
+  }
 ]
 ```
 
-These example settings create the following tickers:
+## Template Tags
 
-![Example](https://github.com/robertcalvert/vscode-crypto-price-ticker/raw/master/images/custom.png)
+You can customize the display template using the following tags:
 
-### Template Tags
+| Tag     | Description                           |
+| ------- | ------------------------------------- |
+| symbol  | Cryptocurrency symbol                 |
+| price   | Current price                         |
+| open    | Opening price for the selected period |
+| high    | Highest price in the period           |
+| low     | Lowest price in the period            |
+| change  | Price difference from opening         |
+| percent | Percentage change from opening        |
 
-You can use tags within your ticker template to customize the output as needed.
+**Example:**
 
-```javascript
-"template": "{symbol} {price}" // The default template
+```jsonc
+"template": "{symbol} {price} {percent}"
 ```
 
-The following tags are available to use:
+## Example Configuration
 
-| Tag     | Description                                                |
-| ------- | ---------------------------------------------------------- |
-| symbol  | The cryptocurrency symbol                                  |
-| price   | The current cryptocurrency price                           |
-| open    | The opening price for the given period                     |
-| high    | The highest price since the period opened                  |
-| low     | The lowest price since the period opened                   |
-| change  | The difference between the opening price and current price |
-| percent | The change as a percent                                    |
+```jsonc
+"crypto-price-ticker.tickers": [
+  {
+    "symbol": "BTC",
+    "currency": "USDT",
+    "provider": "Binance",
+    "template": "{symbol}: {price} ({percent})"
+  },
+  {
+    "symbol": "ETH",
+    "currency": "USDT",
+    "provider": "OKX",
+    "template": "{symbol}: {price} ({percent})"
+  }
+]
+```
 
-### Icon
+## Supported Providers
 
-Icon made by [Vectors Market](https://www.flaticon.com/authors/vectors-market) from www.flaticon.com
+- **Binance**
+- **OKX**
+
+## API Rate Limits
+
+> **Note:** Both Binance and OKX enforce API rate limits. If you set a very low refresh interval or track too many tickers, you may encounter temporary bans or receive incomplete data.
+>
+> - **Binance**: [API rate limits](https://binance-docs.github.io/apidocs/spot/en/#limits) apply per IP and endpoint.
+> - **OKX**: [API rate limits](https://www.okx.com/docs-v5/en/#rest-api-rate-limit) also apply per IP and endpoint.  
+>   To avoid issues, use a reasonable refresh interval (e.g., 60 seconds or higher) and limit the number of tracked tickers.
+
+## Screenshot
+
+![Example](https://github.com/Mavis2103/Crypto-Tricker/raw/master/images/default.png)
+
+## Data Source
+
+This extension uses [binance.com](https://binance.com) and [okx.com](https://okx.com) for price data.
 
 ## License
 

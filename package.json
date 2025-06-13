@@ -8,7 +8,7 @@
     "price",
     "crypto"
   ],
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "Mavis2103",
   "repository": {
     "type": "git",
@@ -34,10 +34,6 @@
   "contributes": {
     "configuration": {
       "properties": {
-        "crypto-price-ticker.apiKey": {
-          "type": "string",
-          "description": "Your CryptoCompare API key."
-        },
         "crypto-price-ticker.interval": {
           "type": "number",
           "default": 60,
@@ -47,16 +43,6 @@
           "type": "boolean",
           "default": false,
           "description": "Disable refreshing when the vscode window does not have focus."
-        },
-        "crypto-price-ticker.period": {
-          "type": "string",
-          "default": "24HOUR",
-          "enum": [
-            "HOUR",
-            "24HOUR",
-            "DAY"
-          ],
-          "description": "The opening period."
         },
         "crypto-price-ticker.higherColor": {
           "type": "string",
@@ -69,15 +55,55 @@
           "description": "The color that indicates the symbols is trading lower."
         },
         "crypto-price-ticker.tickers": {
-          "type": "object",
-          "default": {
-            "symbols": [
-              "BTC",
-              "ETH"
-            ],
-            "currency": "USD"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "symbol": {
+                "type": "string",
+                "description": "The symbol to display."
+              },
+              "currency": {
+                "type": "string",
+                "default": "USDT",
+                "description": "The currency to display the price in."
+              },
+              "exchange": {
+                "type": "string",
+                "description": "The exchange to get the price from."
+              },
+              "template": {
+                "type": "string",
+                "default": "{symbol} {price}",
+                "description": "The template to use to display the ticker."
+              },
+              "provider": {
+                "type": "string",
+                "default": "Binance",
+                "enum": [
+                  "Binance",
+                  "OKX"
+                ],
+                "description": "The provider to use to get the price."
+              }
+            },
+            "required": [
+              "symbol"
+            ]
           },
-          "description": "The object of ticker definitions to display in the status bar."
+          "default": [
+            {
+              "symbol": "BTC",
+              "currency": "USDT",
+              "provider": "Binance"
+            },
+            {
+              "symbol": "ETH",
+              "currency": "USDT",
+              "provider": "Binance"
+            }
+          ],
+          "description": "The array of ticker definitions to display in the status bar."
         }
       }
     }
