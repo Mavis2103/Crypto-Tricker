@@ -7,7 +7,7 @@
     "ethereum",
     "litecoin"
   ],
-  "version": "1.3.0",
+  "version": "1.0.0",
   "publisher": "Mavis2103",
   "repository": {
     "type": "git",
@@ -60,30 +60,23 @@
         "crypto-ticker.higherColor": {
           "type": "string",
           "default": "lightgreen",
-          "description": "The color that indicates the symbol is trading higher."
+          "description": "The color that indicates the symbols is trading higher."
         },
-        "crypto-ticker.lowerColor": {
+        "lowerColor": {
           "type": "string",
           "default": "coral",
-          "description": "The color that indicates the symbol is trading lower."
+          "description": "The color that indicates the symbols is trading lower."
         },
         "crypto-ticker.tickers": {
-          "type": "array",
-          "default": [
-            {
-              "symbol": "BTC",
-              "currency": "USD",
-              "exchange": "CCCAGG",
-              "template": "{symbol} {price}"
-            },
-            {
-              "symbol": "ETH"
-            },
-            {
-              "symbol": "LTC"
-            }
-          ],
-          "description": "The array of ticker definitions to display in the status bar."
+          "type": "object",
+          "default": {
+            "symbols": [
+              "BTC",
+              "ETH"
+            ],
+            "currency": "USD"
+          },
+          "description": "The object of ticker definitions to display in the status bar."
         }
       }
     }

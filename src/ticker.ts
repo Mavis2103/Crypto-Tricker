@@ -7,100 +7,120 @@ import * as vscode from 'vscode';
 import got from 'got';
 
 // represents a ticker object
-export class Ticker {
-    // the tickers status bar item
-    item: vscode.StatusBarItem;
+export class Tickers {
+  // the tickers status bar item
+  private items: { [key: string]: vscode.StatusBarItem } = {};
 
-    // the definition properties
-    symbol: string;
-    currency: string;
-    exchange: string;
-    template: string;
+  // the definition properties
+  symbols: string[];
+  currency: string;
+  exchange: string;
+  template: string;
 
-    // the configuration properties
-    apiKey: string;
-    period: string;
-    higherColor: string;
-    lowerColor: string;
+  // the configuration properties
+  apiKey: string;
+  period: string;
+  higherColor: string;
+  lowerColor: string;
 
-    // construct a new ticker based on a ticker definition
-    constructor(definition: any, priority: number) {
-        // set the definition properties
-        this.item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, priority);
-        this.symbol = definition.symbol;
-        this.currency = definition.currency || 'USD';
-        this.exchange = definition.exchange;
-        this.template = definition.template || '{symbol} {price}';
+  // construct a new ticker based on a ticker definition
+  constructor(definition: any) {
+    // set the definition properties
+    this.symbols = definition.symbols || ['BTC', 'ETH'];
+    this.currency = definition.currency || 'USD';
+    this.exchange = definition.exchange;
+    this.template = definition.template || '{symbol} {prices}';
 
-        // set the configuration properties
-        const configuration: any = vscode.workspace.getConfiguration().get('crypto-ticker');
-        this.apiKey = configuration.apiKey;
-        this.period = configuration.period;
-        this.higherColor = configuration.higherColor;
-        this.lowerColor = configuration.lowerColor;
+    // set the configuration properties
+    const configuration: any = vscode.workspace.getConfiguration().get('crypto-ticker');
+    this.apiKey = configuration.apiKey;
+    this.period = configuration.period;
+    this.higherColor = configuration.higherColor || 'lightgreen';
+    this.lowerColor = configuration.lowerColor || 'coral';
 
-        // handle the first refresh call
-        this.refresh();
-    }
+    // create status bar items for each symbol
+    this.symbols.forEach((symbol, priority) => {
+      this.items[symbol] = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, priority);
+    });
 
-    // dispose of the ticker
-    dispose() {
-        // hide and dispose the status bar item
-        this.item.hide();
-        this.item.dispose();
-    }
+    // handle the first refresh call
+    this.refresh();
+  }
 
-    // refresh the ticker
-    refresh() {
-        (async () => {
-            try {
-                // get the 'base' service URL
-                let url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${this.symbol}&tsyms=${this.currency}`;
+  // dispose of the ticker
+  dispose() {
+    // hide and dispose the status bar item
+    Object.values(this.items).forEach(item => {
+      item.hide();
+      item.dispose();
+    });
+  }
 
-                // including the exchange in the URL when present
-                if (this.exchange !== undefined) {
-                    url += `&e=${this.exchange}`;
-                }
+  // refresh the ticker
+  refresh() {
+    (async () => {
+      try {
+        // get the 'base' service URL
+        let url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${this.symbols.join(',')}&tsyms=${this.currency}`;
 
-                // including the API key in the URL when present
-                if (this.apiKey !== '') {
-                    url += `&api_key=${this.apiKey}`;
-                }
+        // including the exchange in the URL when present
+        if (this.exchange !== undefined) {
+          url += `&e=${this.exchange}`;
+        }
 
-                // call the service and parse the response
-                const response = await got(url);
-                const object = JSON.parse(response.body);
+        // including the API key in the URL when present
+        if (this.apiKey !== '') {
+          url += `&api_key=${this.apiKey}`;
+        }
 
-                // get the required values
-                const price: string = object.DISPLAY[this.symbol][this.currency].PRICE;
-                const open: string = object.DISPLAY[this.symbol][this.currency]['OPEN' + this.period];
-                const high: string = object.DISPLAY[this.symbol][this.currency]['HIGH' + this.period];
-                const low: string = object.DISPLAY[this.symbol][this.currency]['LOW' + this.period];
-                const percent: number = object.DISPLAY[this.symbol][this.currency]['CHANGEPCT' + this.period];
-                const change: string = object.DISPLAY[this.symbol][this.currency]['CHANGE' + this.period];
+        // call the service and parse the response
+        const response = await got(url);
+        const object = JSON.parse(response.body);
 
-                // set the status bar item text using the template
-                this.item.text = this.template.replace('{symbol}', this.symbol)
-                    .replace('{price}', price)
-                    .replace('{open}', open)
-                    .replace('{high}', high)
-                    .replace('{low}', low)
-                    .replace('{change}', change)
-                    .replace('{percent}', (percent >= 0 ? '+' : '') + percent + '%');
+        // Handle errors when the API response is not in the expected format
+        if (!object.DISPLAY) {
+          console.error('Invalid API response format');
+          return;
+        }
 
-                // set the status bar item colour based on the percent change
-                this.item.color = (percent < 0) ? this.lowerColor : this.higherColor;
+        // get the required values
+        this.symbols.forEach(symbol => {
+          // Handle errors when the symbol is not found in the API response
+          if (!object.DISPLAY[symbol] || !object.DISPLAY[symbol][this.currency]) {
+            console.error(`Invalid API response for symbol ${symbol}`);
+            return;
+          }
 
-                // make sure the status bar item is visible
-                this.item.show();
+          const price: string = object.DISPLAY[symbol][this.currency].PRICE;
+          const open: string = object.DISPLAY[symbol][this.currency]['OPEN' + this.period];
+          const high: string = object.DISPLAY[symbol][this.currency]['HIGH' + this.period];
+          const low: string = object.DISPLAY[symbol][this.currency]['LOW' + this.period];
+          const percent: number = object.DISPLAY[symbol][this.currency]['CHANGEPCT' + this.period];
+          const change: string = object.DISPLAY[symbol][this.currency]['CHANGE' + this.period];
 
-            } catch (error) {
-                // log the error and hide the status bar item
-                console.log(error.message);
-                this.item.hide();
-            }
-        })();
+          const item = this.items[symbol];
 
-    }
-
+          // set the status bar item text using the template
+          item.text = this.template
+            .replace('{symbol}', symbol)
+            .replace('{price}', price)
+            .replace('{open}', open)
+            .replace('{high}', high)
+            .replace('{low}', low)
+            .replace('{change}', change)
+            .replace('{percent}', (percent >= 0 ? '+' : '') + percent + '%');
+          // set the status bar item colour based on the percent change
+          item.color = percent < 0 ? this.lowerColor : this.higherColor;
+          // make sure the status bar item is visible
+          item.show();
+        });
+      } catch (error) {
+        // log the error and hide the status bar item
+        console.log(error.message);
+        Object.values(this.items).forEach(item => {
+          item.hide();
+        });
+      }
+    })();
+  }
 }
