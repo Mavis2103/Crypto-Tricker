@@ -8,7 +8,11 @@
     "litecoin"
   ],
   "version": "1.3.0",
-  "publisher": "Mavis",
+  "publisher": "Mavis2103",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mavis2103/Crypto-Tricker"
+  },
   "license": "MIT",
   "icon": "images/icon.png",
   "engines": {
