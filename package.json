@@ -1,0 +1,105 @@
+{
+  "name": "crypto-ticker",
+  "displayName": "crypto-ticker",
+  "description": "Keep an eye on cryptocurrency prices as you code!",
+  "keywords": [
+    "bitcoin",
+    "ethereum",
+    "litecoin"
+  ],
+  "version": "1.3.0",
+  "publisher": "Mavis",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "contributes": {
+    "configuration": {
+      "properties": {
+        "crypto-ticker.apiKey": {
+          "type": "string",
+          "description": "Your CryptoCompare API key."
+        },
+        "crypto-ticker.interval": {
+          "type": "number",
+          "default": 60,
+          "description": "The refresh interval in seconds."
+        },
+        "crypto-ticker.onlyRefreshWhenFocused": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable refreshing when the vscode window does not have focus."
+        },
+        "crypto-ticker.period": {
+          "type": "string",
+          "default": "24HOUR",
+          "enum": [
+            "HOUR",
+            "24HOUR",
+            "DAY"
+          ],
+          "description": "The opening period."
+        },
+        "crypto-ticker.higherColor": {
+          "type": "string",
+          "default": "lightgreen",
+          "description": "The color that indicates the symbol is trading higher."
+        },
+        "crypto-ticker.lowerColor": {
+          "type": "string",
+          "default": "coral",
+          "description": "The color that indicates the symbol is trading lower."
+        },
+        "crypto-ticker.tickers": {
+          "type": "array",
+          "default": [
+            {
+              "symbol": "BTC",
+              "currency": "USD",
+              "exchange": "CCCAGG",
+              "template": "{symbol} {price}"
+            },
+            {
+              "symbol": "ETH"
+            },
+            {
+              "symbol": "LTC"
+            }
+          ],
+          "description": "The array of ticker definitions to display in the status bar."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "vsce package",
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.21",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "typescript": "^4.5.5",
+    "eslint": "^8.9.0"
+  },
+  "dependencies": {
+    "got": "^11.8.3",
+    "vsce": "^2.15.0"
+  }
+}
