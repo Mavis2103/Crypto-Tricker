@@ -44,7 +44,7 @@ export class OKXTickerProvider extends BaseTickerProvider {
 
     const last = parseFloat(tickerData.last);
     const open24h = parseFloat(tickerData.open24h);
-    const change = parseFloat((last - open24h).toFixed(2));
+    const change = last - open24h;
     const percent = parseFloat(((change / open24h) * 100).toFixed(2));
 
     return {
@@ -52,7 +52,7 @@ export class OKXTickerProvider extends BaseTickerProvider {
       open: open24h,
       high: parseFloat(tickerData.high24h),
       low: parseFloat(tickerData.low24h),
-      change: change,
+      change: parseFloat(change.toFixed(2)),
       percent: percent
     };
   }

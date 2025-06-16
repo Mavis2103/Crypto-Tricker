@@ -1,28 +1,30 @@
-# Crypto Price Ticker
+# Crypto Price Ticker for VS Code
 
-[marketplace]: https://marketplace.visualstudio.com/items?itemName=Mavis2103.crypto-price-ticker
+Monitor real-time cryptocurrency prices directly in your Visual Studio Code status bar. Stay updated with the latest prices for Bitcoin, Ethereum, and any other supported coins from Binance and OKX exchanges while you code.
 
-[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/Mavis2103.crypto-price-ticker)][marketplace]
-[![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/Mavis2103.crypto-price-ticker)][marketplace]
-[![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/Mavis2103.crypto-price-ticker)][marketplace]
+## Key Features
 
-Monitor cryptocurrency prices live on your Visual Studio Code status bar!
-
-## Features
-
-- Display real-time prices for cryptocurrencies (BTC, ETH, etc.).
-- Support for multiple data providers: Binance, OKX.
-- Customize coins, comparison currency, provider, colors, and display template.
-- Support for multiple coins at once.
-- Auto-refresh at a configurable interval or only when VSCode is focused.
+- **Live Crypto Prices**: View up-to-date prices for your favorite cryptocurrencies such as BTC, ETH, and more.
+- **Multiple Providers Supported**: Fetch data from top exchanges: **Binance** and **OKX**.
+- **Customizable Tickers**: Choose coins, quote currencies, providers, colors, and display templates.
+- **Track Multiple Coins**: Add as many tickers as you want.
+- **Auto Refresh**: Set your own refresh interval or update only when VS Code is focused.
+- **Lightweight & Fast**: Minimal impact on your workflow and system resources.
 
 ## Installation
 
-Install from [Visual Studio Marketplace][marketplace] or search for `crypto-price-ticker` in the Extensions panel.
+1. Open Visual Studio Code.
+2. Go to the Extensions view (`Ctrl+Shift+X`).
+3. Search for `crypto-price-ticker` and install it.
+4. Or install directly from [Visual Studio Marketplace][marketplace].
 
-## Configuration
+[marketplace]: https://marketplace.visualstudio.com/items?itemName=Mavis2103.crypto-price-ticker
 
-Open your `settings.json` and add or edit the following options:
+## How to Use
+
+### Configuration
+
+Edit your VS Code `settings.json` to customize the extension:
 
 ```jsonc
 // Refresh interval in seconds
@@ -54,19 +56,19 @@ Open your `settings.json` and add or edit the following options:
 ]
 ```
 
-## Template Tags
+### Template Tags
 
-You can customize the display template using the following tags:
+Customize how each ticker appears in the status bar using these tags:
 
-| Tag     | Description                           |
-| ------- | ------------------------------------- |
-| symbol  | Cryptocurrency symbol                 |
-| price   | Current price                         |
-| open    | Opening price for the selected period |
-| high    | Highest price in the period           |
-| low     | Lowest price in the period            |
-| change  | Price difference from opening         |
-| percent | Percentage change from opening        |
+| Tag     | Description                       |
+| ------- | --------------------------------- |
+| symbol  | Cryptocurrency symbol (e.g., BTC) |
+| price   | Current price                     |
+| open    | Opening price for the period      |
+| high    | Highest price in the period       |
+| low     | Lowest price in the period        |
+| change  | Price difference from opening     |
+| percent | Percentage change from opening    |
 
 **Example:**
 
@@ -74,7 +76,7 @@ You can customize the display template using the following tags:
 "template": "{symbol} {price} {percent}"
 ```
 
-## Example Configuration
+### Example Configuration
 
 ```jsonc
 "crypto-price-ticker.tickers": [
@@ -93,27 +95,34 @@ You can customize the display template using the following tags:
 ]
 ```
 
-## Supported Providers
+## Supported Crypto Data Providers
 
-- **Binance**
-- **OKX**
+- **Binance** — [binance.com](https://binance.com)
+- **OKX** — [okx.com](https://okx.com)
 
 ## API Rate Limits
 
-> **Note:** Both Binance and OKX enforce API rate limits. If you set a very low refresh interval or track too many tickers, you may encounter temporary bans or receive incomplete data.
+> **Important:** Both Binance and OKX enforce API rate limits. Setting a very low refresh interval or tracking too many tickers may result in temporary bans or incomplete data.
 >
 > - **Binance**: [API rate limits](https://binance-docs.github.io/apidocs/spot/en/#limits) apply per IP and endpoint.
-> - **OKX**: [API rate limits](https://www.okx.com/docs-v5/en/#rest-api-rate-limit) also apply per IP and endpoint.  
->   To avoid issues, use a reasonable refresh interval (e.g., 60 seconds or higher) and limit the number of tracked tickers.
+> - **OKX**: [API rate limits](https://www.okx.com/docs-v5/en/#rest-api-rate-limit) also apply per IP and endpoint.
+>
+> **Recommendation:** Use a refresh interval of 60 seconds or higher and limit the number of tracked tickers for best results.
 
 ## Screenshot
 
-![Example](https://github.com/Mavis2103/Crypto-Tricker/raw/master/images/default.png)
+![Crypto Price Ticker VS Code Example](https://github.com/Mavis2103/Crypto-Tricker/raw/master/images/default.png)
 
-## Data Source
+## Why Use Crypto Price Ticker for VS Code?
 
-This extension uses [binance.com](https://binance.com) and [okx.com](https://okx.com) for price data.
+- Instantly see crypto prices without leaving your coding environment.
+- Highly customizable and easy to set up.
+- Supports the most popular exchanges and coins.
 
 ## License
 
 [MIT](LICENSE.md)
+
+---
+
+**Crypto Price Ticker for VS Code** — The best way to keep track of cryptocurrency prices while coding!
